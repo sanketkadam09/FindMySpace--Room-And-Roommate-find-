@@ -62,13 +62,13 @@ The platform supports **4 types of users** with role-based access and personaliz
 
 ---
 Setup Client:
-cd client
-npm install
-npm start
+-cd client
+-npm install
+-npm start
 
 Setup Server
-cd server
-npm install
-nodemon App.js
+-cd server
+-npm install
+-nodemon App.js
 
 
