@@ -61,10 +61,14 @@ The platform supports **4 types of users** with role-based access and personaliz
 - Cloudinary (image storage)  
 
 ---
+Setup Client:
+cd client
+npm install
+npm start
 
-## ⚙️ Installation & Setup
+Setup Server
+cd server
+npm install
+nodemon App.js
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/sanketkadam09/FindMySpace--Room-And-Roommate-find-.git
-cd FindMySpace--Room-And-Roommate-find-
+
