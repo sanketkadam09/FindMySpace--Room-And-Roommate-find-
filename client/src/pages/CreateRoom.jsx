@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"; // ⬅️ import useEffect
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 const CreateRoom = () => {
   const [form, setForm] = useState({
@@ -34,7 +35,7 @@ const CreateRoom = () => {
   const geocodeLocation = async (location) => {
     try {
       const res = await fetch(
-        `https://us1.locationiq.com/v1/search?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${encodeURIComponent(
+        `https://us1.locationiq.com/v1/search?key=${API_URL}&q=${encodeURIComponent(
           location
         )}&format=json`
       );
@@ -99,7 +100,7 @@ const CreateRoom = () => {
     });
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms`, {
+      const res = await fetch(`${API_URL}/api/rooms`, {
         method: "POST",
         credentials: "include",
         body: formData,

@@ -6,6 +6,7 @@ import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { AuthContext } from "../../context/AuthContext";
 import RoomPhotoGallery from "../RoomPhotoGallery";
+import { API_URL } from "../../config";
 
 const MyPage = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const MyPage = () => {
 
     const loadUserProfile = async () => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/profile`, {
+            const res = await fetch(`${API_URL}/api/profile`, {
                 credentials: "include"
             });
             
@@ -47,7 +48,7 @@ const MyPage = () => {
 
     const loadUserCapabilities = async () => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/capabilities`, {
+            const res = await fetch(`${API_URL}/api/users/capabilities`, {
                 credentials: "include"
             });
             
@@ -66,7 +67,7 @@ const MyPage = () => {
 
     const handleDeleteRoomPhoto = async (photoUrl) => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/room-photos/${encodeURIComponent(photoUrl)}`, {
+            const res = await fetch(`${API_URL}/api/users/room-photos/${encodeURIComponent(photoUrl)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -139,7 +140,7 @@ const MyPage = () => {
                             <div className="relative">
                                 {profileData.profileImage ? (
                                     <img
-                                        src={`${process.env.REACT_APP_API_URL}${profileData.profileImage}`}
+                                        src={`${API_URL}${profileData.profileImage}`}
                                         alt="Profile"
                                         className="h-28 w-28 rounded-full object-cover border-4 border-white shadow-md"
                                     />

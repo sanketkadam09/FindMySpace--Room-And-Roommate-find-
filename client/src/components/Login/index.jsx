@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { API_URL } from "../../config";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -39,7 +40,7 @@ const Login = () => {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/login`, {
+            const res = await fetch(`${API_URL}/api/login`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

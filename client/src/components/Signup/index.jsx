@@ -2,6 +2,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { API_URL } from "../../config";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -83,7 +84,7 @@ const Signup = () => {
                 }
             };
 
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/signup`, {
+            const res = await fetch(`${API_URL}/api/signup`, {
                 method: "POST",
                 credentials: "include",
                 headers: {

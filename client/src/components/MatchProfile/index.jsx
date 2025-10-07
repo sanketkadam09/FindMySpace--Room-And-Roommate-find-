@@ -2,6 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaMapMarkerAlt, FaDollarSign } from 'react-icons/fa';
+import { API_URL } from "../../config";
 
 const MatchProfileCard = ({ user, room, matchPercent, imageIndex, onPrevImage, onNextImage }) => {
     const navigate = useNavigate();
@@ -43,7 +44,7 @@ const MatchProfileCard = ({ user, room, matchPercent, imageIndex, onPrevImage, o
     };
 
     const imageUrl = profileImage
-        ? `${process.env.REACT_APP_API_URL}${profileImage}`
+        ? `${API_URL}${profileImage}`
         : `https://ui-avatars.com/api/?name=${encodeURIComponent(
               name
           )}&background=4f46e5&color=fff`;

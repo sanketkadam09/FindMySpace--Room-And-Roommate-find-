@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 const MyRooms = () => {
   const [rooms, setRooms] = useState([]);
@@ -11,7 +12,7 @@ const MyRooms = () => {
 
   const fetchMyRooms = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/my-rooms`, {
+      const res = await fetch(`${API_URL}/api/rooms/my-rooms`, {
         credentials: "include",
       });
       const data = await res.json();
@@ -27,7 +28,7 @@ const MyRooms = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this room?")) return;
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/${id}`, {
+      const res = await fetch(`${API_URL}/api/rooms/${id}`, {
         method: "DELETE",
         credentials: "include",
       });
@@ -51,13 +52,13 @@ const MyRooms = () => {
     if (room.images?.[0]?.url) {
       return room.images[0].url.startsWith("http")
         ? room.images[0].url
-        : `${process.env.REACT_APP_API_URL}${room.images[0].url}`;
+        : `${API_URL}${room.images[0].url}`;
     }
     // Case 2: The images are in a simple array of strings
     if (room.photos?.[0]) {
       return room.photos[0].startsWith("http")
         ? room.photos[0]
-        : `${process.env.REACT_APP_API_URL}${room.photos[0]}`;
+        : `${API_URL}${room.photos[0]}`;
     }
     
     return defaultPlaceholder;

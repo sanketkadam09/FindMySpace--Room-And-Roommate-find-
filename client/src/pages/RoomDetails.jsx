@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, Polyline, Popup } from "react-leaflet"
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useAuth } from "../context/AuthContext";
+import { API_URL } from "../config";
 
 // Fix for default Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -54,7 +55,7 @@ const RoomDetails = () => {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/rooms/${id}`,
+          `${API_URL}/api/rooms/${id}`,
           {
             method: "GET",
             headers: { "Content-Type": "application/json" },

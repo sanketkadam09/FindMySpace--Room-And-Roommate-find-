@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 const MyBookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -9,7 +10,7 @@ const MyBookings = () => {
 
   const fetchMyBookings = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/bookings/me`, {
+      const res = await fetch(`${API_URL}/api/bookings/me`, {
         credentials: "include",
       });
       const data = await res.json();

@@ -1,5 +1,6 @@
 // client/src/components/RoomPhotoGallery/index.jsx
 import React, { useState } from 'react';
+import { API_URL } from '../../config';
 
 const RoomPhotoGallery = ({ photos = [], onDeletePhoto, canDelete = false }) => {
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -51,7 +52,7 @@ const RoomPhotoGallery = ({ photos = [], onDeletePhoto, canDelete = false }) => 
                 {photos.map((photo, index) => (
                     <div key={index} className="relative group">
                         <img
-                            src={`${process.env.REACT_APP_API_URL}${photo}`}
+                            src={`${API_URL}${photo}`}
                             alt={`Room photo ${index + 1}`}
                             className="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
                             onClick={() => openModal(photo, index)}
@@ -116,7 +117,7 @@ const RoomPhotoGallery = ({ photos = [], onDeletePhoto, canDelete = false }) => 
 
                         {/* Photo */}
                         <img
-                            src={`${process.env.REACT_APP_API_URL}${selectedPhoto}`}
+                            src={`${API_URL}${selectedPhoto}`}
                             alt={`Room photo ${currentIndex + 1}`}
                             className="max-w-full max-h-full object-contain rounded-lg"
                         />

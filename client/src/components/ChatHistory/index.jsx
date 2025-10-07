@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
+import { API_URL } from "../../config";
 
-const socket = io(`${process.env.REACT_APP_API_URL}`, {
+
+
+const socket = io(`${API_URL}`, {
   withCredentials: true,
 });
 
@@ -24,7 +27,7 @@ const ChatHistory = () => {
   const fetchChats = async () => {
     try {
       // ✅ CORRECTED ENDPOINT
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages/chats`, {
+      const res = await fetch(`${API_URL}/api/messages/chats`, {
         method: "GET",
         credentials: "include",
       });
@@ -38,7 +41,7 @@ const ChatHistory = () => {
 
   const fetchUser = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
+      const res = await fetch(`${API_URL}/api/users`, {
         credentials: "include",
       });
       const data = await res.json();
@@ -53,7 +56,7 @@ const ChatHistory = () => {
 
   const handleChatOpen = async (chatId) => {
     try {
-      await fetch(`${process.env.REACT_APP_API_URL}/api/messages/${chatId}/read`, {
+      await fetch(`${API_URL}/api/messages/${chatId}/read`, {
         method: "PUT",
         credentials: "include",
       });
@@ -122,7 +125,7 @@ const ChatHistory = () => {
             <div className="space-y-4">
               {chats.map((chat) => {
                 const imageUrl = chat.profileImage
-                  ? `${process.env.REACT_APP_API_URL}${chat.profileImage}`
+                  ? `${API_URL}${chat.profileImage}`
                   : `https://ui-avatars.com/api/?name=${encodeURIComponent(chat.name)}`;
 
                 return (

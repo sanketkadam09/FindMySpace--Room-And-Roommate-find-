@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 const BookingForm = () => {
   const { id } = useParams(); // roomId
@@ -30,7 +31,7 @@ const BookingForm = () => {
     }
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/bookings/${id}`, {
+      const res = await fetch(`${API_URL}/api/bookings/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

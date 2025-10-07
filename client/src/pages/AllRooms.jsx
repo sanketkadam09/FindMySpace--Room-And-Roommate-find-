@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { API_URL } from "../config";
 
 const AllRooms = () => {
   const [filters, setFilters] = useState({
@@ -45,7 +46,7 @@ const AllRooms = () => {
     const defaultPlaceholder = "https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80";
     if (room.images && room.images.length > 0 && room.images[index]?.url) {
       const imageUrl = room.images[index].url;
-      return imageUrl.startsWith("http") ? imageUrl : `${process.env.REACT_APP_API_URL}${imageUrl}`;
+      return imageUrl.startsWith("http") ? imageUrl : `${API_URL}${imageUrl}`;
     }
     return defaultPlaceholder;
   };
@@ -62,7 +63,7 @@ const AllRooms = () => {
         ...(maxPrice && { maxPrice }),
       }).toString();
 
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms?${query}`, {
+      const res = await fetch(`${API_URL}/api/rooms?${query}`, {
         credentials: "include",
       });
 

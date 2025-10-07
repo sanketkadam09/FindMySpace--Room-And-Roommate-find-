@@ -1,6 +1,7 @@
 // src/pages/SendMessage.jsx
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 const SendMessage = () => {
   const { id } = useParams(); // Receiver user ID from the route
@@ -15,7 +16,7 @@ const SendMessage = () => {
     }
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages`, {
+      const res = await fetch(`${API_URL}/api/messages`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

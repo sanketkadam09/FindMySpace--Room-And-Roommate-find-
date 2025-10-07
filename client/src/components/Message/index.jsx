@@ -3,8 +3,9 @@ import { useParams } from "react-router-dom";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { io } from "socket.io-client";
+import { API_URL } from "../../config";
 
-const socket = io(process.env.REACT_APP_API_URL || "http://localhost:5000", {
+const socket = io(`${API_URL}`|| "http://localhost:5000", {
   withCredentials: true,
 });
 
@@ -20,7 +21,7 @@ const Message = () => {
 
   const fetchMe = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users`, {
+      const res = await fetch(`${API_URL}/api/users`, {
         method: "GET",
         credentials: "include",
       });
@@ -34,7 +35,7 @@ const Message = () => {
 
   const fetchOtherUser = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/${id}`, {
+      const res = await fetch(`${API_URL}/api/users/${id}`, {
         method: "GET",
         credentials: "include",
       });
@@ -48,7 +49,7 @@ const Message = () => {
 
   const fetchMessages = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/messages/${id}`, {
+      const res = await fetch(`${API_URL}/api/messages/${id}`, {
         method: "GET",
         credentials: "include",
       });

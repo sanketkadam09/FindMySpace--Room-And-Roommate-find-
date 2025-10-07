@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { API_URL } from "../config";
 
 const EditRoom = () => {
   const { id } = useParams();
@@ -33,7 +34,7 @@ const EditRoom = () => {
     const fetchRoom = async () => {
       // ... (existing fetch logic remains the same)
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/${id}`, {
+        const res = await fetch(`${API_URL}/api/rooms/${id}`, {
           credentials: "include",
         });
         const data = await res.json();
@@ -76,7 +77,7 @@ const EditRoom = () => {
   const geocodeLocation = async (location) => {
     try {
       const res = await fetch(
-        `https://us1.locationiq.com/v1/search?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&q=${encodeURIComponent(
+        `https://us1.locationiq.com/v1/search?key=${API_URL}&q=${encodeURIComponent(
           location
         )}&format=json`
       );
@@ -148,7 +149,7 @@ const EditRoom = () => {
     });
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/${id}`, {
+      const res = await fetch(`${API_URL}/api/rooms/${id}`, {
         method: "PUT",
         credentials: "include",
         body: formData, // Send FormData

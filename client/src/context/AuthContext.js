@@ -1,5 +1,6 @@
 // client/src/context/AuthContext.js
 import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
+import { API_URL } from '../config';
 
 export const AuthContext = createContext();
 
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     const logout = useCallback(async () => {
         try {
             // Call logout endpoint to clear httpOnly cookie
-            await fetch(`${process.env.REACT_APP_API_URL}/api/logout`, {
+            await fetch(`${API_URL}/api/logout`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -48,7 +49,7 @@ export const AuthProvider = ({ children }) => {
             if (storedUser) {
                 try {
                     // Verify token with backend
-                    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/verify-token`, {
+                    const res = await fetch(`${API_URL}/api/verify-token`, {
                         method: "GET",
                         credentials: "include",
                     });

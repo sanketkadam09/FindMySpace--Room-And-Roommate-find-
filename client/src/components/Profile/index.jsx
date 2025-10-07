@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { AuthContext } from "../../context/AuthContext";
+import { API_URL } from "../../config";
 
 const ProfileSetup = () => {
     const navigate = useNavigate();
@@ -71,7 +72,7 @@ const ProfileSetup = () => {
 
     const loadUserProfile = async () => {
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/profile`, {
+            const res = await fetch(`${API_URL}/api/profile`, {
                 credentials: "include"
             });
             
@@ -91,7 +92,7 @@ const ProfileSetup = () => {
                 }));
 
                 if (userData.profileImage) {
-                    setImagePreview(`${process.env.REACT_APP_API_URL}${userData.profileImage}`);
+                    setImagePreview(`${API_URL}${userData.profileImage}`);
                 }
             } else {
                 const errorData = await res.json();
@@ -142,7 +143,7 @@ const ProfileSetup = () => {
         formData.append('profileImage', profileImage);
 
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/users/upload-profile-image`, {
+            const res = await fetch(`${API_URL}/api/users/upload-profile-image`, {
                 method: 'POST',
                 credentials: 'include',
                 body: formData
@@ -167,7 +168,7 @@ const ProfileSetup = () => {
         setSuccess("");
 
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/profile`, {
+            const res = await fetch(`${API_URL}/api/profile`, {
                 method: "PUT",
                 credentials: "include",
                 headers: {

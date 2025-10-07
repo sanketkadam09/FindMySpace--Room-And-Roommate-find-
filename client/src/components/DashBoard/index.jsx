@@ -4,6 +4,9 @@ import MatchProfileCard from "../MatchProfile";
 import Navbar from "../Navbar";
 import Footer from "../Footer";
 import { AuthContext } from "../../context/AuthContext";
+import { API_URL } from "../../config";
+
+
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -25,7 +28,7 @@ const Dashboard = () => {
 
         try {
             setMatchesLoading(true);
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/match/percent`, {
+            const res = await fetch(`${API_URL}/api/rooms/match/percent`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -52,7 +55,7 @@ const Dashboard = () => {
 
         try {
             setMatchesLoading(true);
-            const roomsRes = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/my-rooms`, {
+            const roomsRes = await fetch(`${API_URL}/api/rooms/my-rooms`, {
                 method: "GET",
                 credentials: "include",
             });
@@ -76,7 +79,7 @@ const Dashboard = () => {
     const handleDelete = async (id) => {
         if (!window.confirm("Are you sure you want to delete this room?")) return;
         try {
-            const res = await fetch(`${process.env.REACT_APP_API_URL}/api/rooms/${id}`, {
+            const res = await fetch(`${API_URL}/api/rooms/${id}`, {
                 method: "DELETE",
                 credentials: "include",
             });
