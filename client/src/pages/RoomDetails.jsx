@@ -96,7 +96,7 @@ const RoomDetails = () => {
         const res = await fetch(
           `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(
             room.location
-          )}&key=${process.env.REACT_APP_OPENCAGE_API_KEY}`
+          )}&key=${API_URL}`
         );
         const data = await res.json();
         const result = data.results[0];
@@ -138,7 +138,7 @@ const RoomDetails = () => {
   const handleMessageOwner = async () => {
     try {
       const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/messages`,
+        `${API_URL}/api/messages`,
         {
           method: "POST",
           headers: {
@@ -184,7 +184,7 @@ const RoomDetails = () => {
     setDirectionsResponse(null); // Clear previous directions
 
     // LocationIQ Directions API URL
-    const locationiqApiUrl = `https://us1.locationiq.com/v1/directions/driving/${userLocation.lng},${userLocation.lat};${coordinates.lng},${coordinates.lat}?key=${process.env.REACT_APP_LOCATIONIQ_API_KEY}&overview=full`;
+    const locationiqApiUrl = `https://us1.locationiq.com/v1/directions/driving/${userLocation.lng},${userLocation.lat};${coordinates.lng},${coordinates.lat}?key=${API_URL}&overview=full`;
 
     try {
       const res = await fetch(locationiqApiUrl);
@@ -212,7 +212,7 @@ const RoomDetails = () => {
     if (window.confirm('Are you sure you want to delete this room?')) {
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/rooms/${id}`,
+          `${API_URL}/api/rooms/${id}`,
           {
             method: "DELETE",
             credentials: "include",

@@ -1,2 +1,2 @@
 // client/src/config.js
-export const API_URL = "https://findmyspace-backend.onrender.com";
+export const API_URL = "https://findmyspace-server.onrender.com;
