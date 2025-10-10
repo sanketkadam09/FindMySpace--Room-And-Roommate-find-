@@ -1,6 +1,6 @@
 /**
  * App.js (entry point)
- * Fully corrected for live deployment
+ * ✅ Fixed for Render deployment
  */
 
 require("dotenv").config();
@@ -26,17 +26,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS setup for deployed frontend (🔥 add methods)
+// ✅ CORS setup for deployed frontend
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // frontend URL (no trailing slash)
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // 🔥 added methods
+    origin: process.env.CLIENT_URL, // e.g. https://findmyspace-frontend.vercel.app
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
 
-// ✅ Handle preflight requests (🔥 important for OPTIONS)
-app.options("*", cors());
+// ✅ Fix: Handle preflight requests properly
+app.options("/*", cors()); // <-- changed from "*" to "/*"
 
 // ✅ MongoDB Connection
 mongoose
@@ -58,8 +58,8 @@ const Message = require("./Message");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL, // frontend URL again for socket
-    methods: ["GET", "POST"],       // 🔥 added methods
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
