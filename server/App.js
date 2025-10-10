@@ -1,6 +1,6 @@
 /**
  * App.js (entry point)
- * Fully corrected for live deployment
+ * Fully fixed for live deployment with Render (backend) + Vercel (frontend)
  */
 
 require("dotenv").config();
@@ -26,10 +26,22 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS setup for deployed frontend
+// ✅ Allowed Origins
+const allowedOrigins = [
+  "http://localhost:3000", // local dev
+  "https://findmyspace-omega.vercel.app", // deployed frontend
+];
+
+// ✅ CORS setup (for API routes)
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // frontend URL, NO trailing slash
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
@@ -50,11 +62,13 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api", contactRoutes);
 
 // ✅ Socket.io Setup
-const Message = require("./Message");
+const Message = require("./Message"); // Ensure this path is correct
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin:process.env.CLIENT_URL, // frontend URL again for socket
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
@@ -69,16 +83,24 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async ({ senderId, receiverId, content }) => {
-    const newMessage = new Message({ sender: senderId, receiver: receiverId, content });
-    await newMessage.save();
-
-    const receiverSocket = onlineUsers.get(receiverId);
-    if (receiverSocket) {
-      io.to(receiverSocket).emit("receiveMessage", {
-        senderId,
+    try {
+      const newMessage = new Message({
+        sender: senderId,
+        receiver: receiverId,
         content,
-        timestamp: newMessage.timestamp,
       });
+      await newMessage.save();
+
+      const receiverSocket = onlineUsers.get(receiverId);
+      if (receiverSocket) {
+        io.to(receiverSocket).emit("receiveMessage", {
+          senderId,
+          content,
+          timestamp: newMessage.timestamp,
+        });
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
   });
 
