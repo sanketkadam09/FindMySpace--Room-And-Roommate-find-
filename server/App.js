@@ -1,8 +1,3 @@
-/**
- * App.js (entry point)
- * ✅ Final version – Fixed for Render deployment with Express 5
- */
-
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -10,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const http = require("http");
 const { Server } = require("socket.io");
+const path = require("path");
 
 // Routes
 const authRoutes = require("./routes/authRoutes");
@@ -26,17 +22,25 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS setup for deployed frontend
+// ✅ Serve uploaded images
+app.use("/images", express.static(path.join(__dirname, "uploads"))); // <-- new
+
+// ✅ CORS setup
+const allowedOrigins = [
+  process.env.CLIENT_URL, // deployed frontend
+  "http://localhost:5173",  // local frontend
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // e.g. https://findmyspace-frontend.vercel.app
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
 
-// ✅ FIX: Handle preflight (OPTIONS) requests properly for Express 5
-app.options(/.*/, cors()); // <-- Regex route (works in Express v5)
+// ✅ Preflight for all routes
+app.options(/.*/, cors());
 
 // ✅ MongoDB Connection
 mongoose
@@ -53,17 +57,34 @@ app.use("/api/match", matchRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api", contactRoutes);
 
-// ✅ Simple health check route (for Render test)
+// ✅ Health check
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK", message: "Backend is running ✅" });
+});
+
+// ✅ LocationIQ helper example
+app.get("/geocode", async (req, res) => {
+  const location = req.query.q;
+  if (!location) return res.status(400).json({ error: "Location required" });
+
+  try {
+    const response = await fetch(
+      `https://us1.locationiq.com/v1/search?key=${process.env.LOCATIONIQ_KEY}&q=${location}&format=json`
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch geocode", details: err.message });
+  }
 });
 
 // ✅ Socket.io Setup
 const Message = require("./Message");
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -107,7 +128,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// ✅ Server Start
+// ✅ Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
