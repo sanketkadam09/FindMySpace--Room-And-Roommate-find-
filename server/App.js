@@ -26,13 +26,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// ✅ CORS setup for deployed frontend
+// ✅ CORS setup for deployed frontend (🔥 add methods)
 app.use(
   cors({
-    origin: process.env.CLIENT_URL, // frontend URL, NO trailing slash
+    origin: process.env.CLIENT_URL, // frontend URL (no trailing slash)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // 🔥 added methods
     credentials: true,
   })
 );
+
+// ✅ Handle preflight requests (🔥 important for OPTIONS)
+app.options("*", cors());
 
 // ✅ MongoDB Connection
 mongoose
@@ -54,7 +58,8 @@ const Message = require("./Message");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin:process.env.CLIENT_URL, // frontend URL again for socket
+    origin: process.env.CLIENT_URL, // frontend URL again for socket
+    methods: ["GET", "POST"],       // 🔥 added methods
     credentials: true,
   },
 });
