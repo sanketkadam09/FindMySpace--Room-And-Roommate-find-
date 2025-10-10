@@ -1,6 +1,6 @@
 /**
  * App.js (entry point)
- * ✅ Fixed for Render deployment
+ * ✅ Final version – Fixed for Render deployment with Express 5
  */
 
 require("dotenv").config();
@@ -35,8 +35,8 @@ app.use(
   })
 );
 
-// ✅ Fix: Handle preflight requests properly
-app.options("/*", cors()); // <-- changed from "*" to "/*"
+// ✅ FIX: Handle preflight (OPTIONS) requests properly for Express 5
+app.options(/.*/, cors()); // <-- Regex route (works in Express v5)
 
 // ✅ MongoDB Connection
 mongoose
@@ -52,6 +52,11 @@ app.use("/api/rooms", roomRoutes);
 app.use("/api/match", matchRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api", contactRoutes);
+
+// ✅ Simple health check route (for Render test)
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "OK", message: "Backend is running ✅" });
+});
 
 // ✅ Socket.io Setup
 const Message = require("./Message");
@@ -74,16 +79,20 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", async ({ senderId, receiverId, content }) => {
-    const newMessage = new Message({ sender: senderId, receiver: receiverId, content });
-    await newMessage.save();
+    try {
+      const newMessage = new Message({ sender: senderId, receiver: receiverId, content });
+      await newMessage.save();
 
-    const receiverSocket = onlineUsers.get(receiverId);
-    if (receiverSocket) {
-      io.to(receiverSocket).emit("receiveMessage", {
-        senderId,
-        content,
-        timestamp: newMessage.timestamp,
-      });
+      const receiverSocket = onlineUsers.get(receiverId);
+      if (receiverSocket) {
+        io.to(receiverSocket).emit("receiveMessage", {
+          senderId,
+          content,
+          timestamp: newMessage.timestamp,
+        });
+      }
+    } catch (error) {
+      console.error("❌ Error saving message:", error.message);
     }
   });
 
