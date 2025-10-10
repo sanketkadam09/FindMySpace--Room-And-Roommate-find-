@@ -153,7 +153,7 @@ exports.login = async (req, res) => {
         
         // Return user data without sensitive information
         res.status(200).json({ 
-            message: "Login successful", 
+            message: "Login successful", s
             user: { 
                 id: user._id,
                 name: user.name, 

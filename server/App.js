@@ -29,7 +29,7 @@ app.use(cookieParser());
 // ✅ CORS setup for deployed frontend
 app.use(
   cors({
-    origin: "https://find-my-space-seven.vercel.app", // frontend URL, NO trailing slash
+    origin: process.env.CLIENT_URL, // frontend URL, NO trailing slash
     credentials: true,
   })
 );
@@ -54,7 +54,7 @@ const Message = require("./Message");
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://find-my-space-seven.vercel.app", // frontend URL again for socket
+    origin:process.env.CLIENT_URL, // frontend URL again for socket
     credentials: true,
   },
 });
